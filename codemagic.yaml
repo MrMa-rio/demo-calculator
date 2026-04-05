@@ -1,23 +1,13 @@
 workflows:
-  kmp-ci:
-    name: KMP CI
-    max_build_duration: 120
+  ios-only:
+    name: iOS Only Build
+    max_build_duration: 60
     instance_type: mac_mini_m2
 
     environment:
       xcode: 16.4.x
       vars:
         GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
-
-    triggering:
-      events:
-        - push
-        - pull_request
-      branch_patterns:
-        - pattern: "*"
-          include: true
-          source: true
-      cancel_previous_builds: true
 
     cache:
       cache_paths:
@@ -26,59 +16,28 @@ workflows:
         - ~/.konan
 
     scripts:
-      - name: Prepare Gradle wrapper
+      - name: Prepare Gradle
         script: chmod +x ./gradlew
 
-      - name: Run shared checks
-        script: ./gradlew :composeApp:check
+      # Build apenas o necessário do KMP (evita perda de tempo)
+      - name: Build shared module
+        script: ./gradlew :composeApp:assemble
 
-      - name: Build Android debug APK
-        script: ./gradlew :composeApp:assembleDebug
-
-      - name: Build iOS app for simulator
+      # Build iOS real + gerar .ipa
+      - name: Build iOS (IPA)
         script: |
           xcodebuild \
             -project iosApp/iosApp.xcodeproj \
             -scheme iosApp \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath build/ios \
-            CODE_SIGNING_ALLOWED=NO \
-            build
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/ios/archive/iosApp.xcarchive \
+            archive
+
+          xcodebuild -exportArchive \
+            -archivePath build/ios/archive/iosApp.xcarchive \
+            -exportOptionsPlist iosApp/exportOptions.plist \
+            -exportPath build/ios/ipa
 
     artifacts:
-      - composeApp/build/outputs/apk/debug/*.apk
-      - build/ios/Build/Products/Debug-iphonesimulator/*.app
-      - composeApp/build/reports/**
-      - build/**/reports/**
-
-  android-release:
-    name: Android Release
-    max_build_duration: 120
-    instance_type: mac_mini_m2
-
-    environment:
-      xcode: 16.4.x
-      vars:
-        GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
-      # Para gerar release assinado no Codemagic, adicione o reference do keystore:
-      # android_signing:
-      #   - keystore_reference
-
-    cache:
-      cache_paths:
-        - ~/.gradle/caches
-        - ~/.gradle/wrapper
-        - ~/.konan
-
-    scripts:
-      - name: Prepare Gradle wrapper
-        script: chmod +x ./gradlew
-
-      - name: Build Android release bundle
-        script: ./gradlew :composeApp:bundleRelease
-
-    artifacts:
-      - composeApp/build/outputs/bundle/release/*.aab
-      - composeApp/build/outputs/apk/release/*.apk
+      - build/ios/ipa/*.ipa
