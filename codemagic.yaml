@@ -8,7 +8,7 @@ workflows:
       xcode: 16.4.x
       ios_signing:
         distribution_type: development
-        bundle_identifier: com.marsn.demo_gamma
+        bundle_identifier: com.marsn.demo calculator
       vars:
         GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
         XCODE_PROJECT: "iosApp/iosApp.xcodeproj"
