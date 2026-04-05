@@ -1,4 +1,4 @@
-package com.marsn.demo_gamma
+package com.marsn.demo_calculator
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

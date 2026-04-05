@@ -1,4 +1,4 @@
-rootProject.name = "demo_gamma"
+rootProject.name = "demo_calculator"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

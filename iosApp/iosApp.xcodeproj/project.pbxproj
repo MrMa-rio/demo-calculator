@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		6ECBC8641FAC3D3D3ECE6E0C /* demo_gamma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo_gamma.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ECBC8641FAC3D3D3ECE6E0C /* demo_calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo_calculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +59,7 @@
 		76DFB91E97940028E4A97F82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6ECBC8641FAC3D3D3ECE6E0C /* demo_gamma.app */,
+				6ECBC8641FAC3D3D3ECE6E0C /* demo_calculator.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			packageProductDependencies = (
 			);
 			productName = iosApp;
-			productReference = 6ECBC8641FAC3D3D3ECE6E0C /* demo_gamma.app */;
+			productReference = 6ECBC8641FAC3D3D3ECE6E0C /* demo_calculator.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

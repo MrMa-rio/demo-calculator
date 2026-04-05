@@ -1,4 +1,4 @@
-package com.marsn.demo_gamma
+package com.marsn.demo_calculator
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

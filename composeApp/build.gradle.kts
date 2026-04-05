@@ -59,11 +59,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.marsn.demo_gamma"
+    namespace = "com.marsn.demo_calculator"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.marsn.demo_gamma"
+        applicationId = "com.marsn.demo_calculator"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -88,4 +88,3 @@ android {
 dependencies {
     debugImplementation(libs.compose.uiTooling)
 }
-

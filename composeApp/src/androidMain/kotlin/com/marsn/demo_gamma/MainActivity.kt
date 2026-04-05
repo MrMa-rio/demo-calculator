@@ -1,4 +1,4 @@
-package com.marsn.demo_gamma
+package com.marsn.demo_calculator
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
