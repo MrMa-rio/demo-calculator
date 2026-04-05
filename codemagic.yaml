@@ -6,8 +6,13 @@ workflows:
 
     environment:
       xcode: 16.4.x
+      ios_signing:
+        distribution_type: ad_hoc
+        bundle_identifier: com.marsn.demo_calculator
       vars:
         GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs=-Xmx4g"
+        XCODE_PROJECT: "iosApp/iosApp.xcodeproj"
+        XCODE_SCHEME: "iosApp"
 
     cache:
       cache_paths:
@@ -19,25 +24,17 @@ workflows:
       - name: Prepare Gradle
         script: chmod +x ./gradlew
 
-      # Build apenas o necessário do KMP (evita perda de tempo)
-      - name: Build shared module
-        script: ./gradlew :composeApp:assemble
+      - name: Set up code signing settings
+        script: xcode-project use-profiles
 
-      # Build iOS real + gerar .ipa
-      - name: Build iOS (IPA)
+      - name: Build signed iOS IPA
         script: |
-          xcodebuild \
-            -project iosApp/iosApp.xcodeproj \
-            -scheme iosApp \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath build/ios/archive/iosApp.xcarchive \
-            archive
-
-          xcodebuild -exportArchive \
-            -archivePath build/ios/archive/iosApp.xcarchive \
-            -exportOptionsPlist iosApp/exportOptions.plist \
-            -exportPath build/ios/ipa
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
 
     artifacts:
       - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
